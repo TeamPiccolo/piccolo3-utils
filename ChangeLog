@@ -1,4 +1,7 @@
 2019-05-08 Magnus Hagdorn
+ * piccolo3/utils/PiccoloProcessedData.py: store wavelength source
+
+2019-05-08 Magnus Hagdorn
  * piccolo3/utils/__init__.py: import module
  * setup.py: handle script and new dependencies
  * piccolo3/readpicco.py: new script to read piccolo json files

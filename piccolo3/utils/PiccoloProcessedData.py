@@ -29,6 +29,7 @@ class PiccoloProcessedData:
         self._serial = None
         self._direction = None
         self._wavelengths = None
+        self._wtype = None
 
         self._runs = []
         self._batches = []
@@ -60,6 +61,7 @@ class PiccoloProcessedData:
                               } )
         data.attrs['serial'] = self.serial
         data.attrs['direction'] = self.direction
+        data.wavelengths.attrs['wavelength_source'] = self._wtype
         return data
     
     def add(self, spec, data=None):
@@ -67,7 +69,7 @@ class PiccoloProcessedData:
         if self._serial is None:
             self._serial = spec['SerialNumber']
             self._direction = spec['Direction']
-            self._wavelengths = numpy.array(spec.waveLengths)
+            self._wtype,self._wavelengths = spec.getWavelengths()
         assert self.serial == spec['SerialNumber']
         assert self.direction == spec['Direction']
 
