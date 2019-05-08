@@ -23,6 +23,7 @@ import datetime, pytz
 import xarray
 import numpy
 import logging
+import glob
 
 spectra_types = {
     'dn' : {
@@ -31,22 +32,22 @@ spectra_types = {
         'corrections':'nonlin, total_dark, integration_time_normalised',
     },
     
-    'radiance' : {
-        'description' : 'radiometric',
+    'Upwelling' : {
+        'description' : 'radiometric radiance',
         'units':'W/(sr cm^2 nm)',
         'corrections':'nonlin, total_dark, integration_time_normalised',
     },
     
-    'irradiance' : {
-        'description' : 'radiometric',
+    'Downwelling' : {
+        'description' : 'radiometric irradiance',
         'units':'W/(cm^2 nm)',
         'corrections':'nonlin, total_dark, integration_time_normalised',
     },
 }
 
 class PiccoloProcessedData:
-    def __init__(self,stype='dn'):
-        self._stype = stype
+    def __init__(self,cal=None):
+        self._cal = cal
         
         self._serial = None
         self._direction = None
@@ -71,10 +72,11 @@ class PiccoloProcessedData:
 
     @property
     def data(self):
+        spectra = numpy.array(self._data)
         data = xarray.Dataset({'temperature': (['measurement'], self._temperature),
                                'temperature_target': (['measurement'], self._temperature_target),
                                'time' :  (['measurement'], self._timestamp),
-                               'spectra': (['measurement','wavelengths'], self._data),
+                               'spectra': (['measurement','wavelengths'], spectra),
                                },
                               coords = {'runs': (['measurement'], self._runs),
                                         'batches': (['measurement'], self._batches),
@@ -84,8 +86,12 @@ class PiccoloProcessedData:
         data.attrs['serial'] = self.serial
         data.attrs['direction'] = self.direction
         data.wavelengths.attrs['wavelength_source'] = self._wtype
-        for k in spectra_types[self._stype].keys():
-            data.spectra.attrs[k] =  spectra_types[self._stype][k]
+        if self._cal is None:
+            stype = 'dn'
+        else:
+            stype = self.direction
+        for k in spectra_types[stype].keys():
+            data.spectra.attrs[k] =  spectra_types[stype][k]
         return data
     
     def add(self, spec, data=None):
@@ -101,7 +107,7 @@ class PiccoloProcessedData:
         self._batches.append(spec['Batch'])
         self._sequences.append(spec['SequenceNumber'])
         if data is not None:
-            self._data.append(data)
+            self._data.append(data*self._cal.calibration_coeff.data)
         else:
             self._data.append(spec.pixels)
         self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=pytz.utc))
@@ -112,12 +118,25 @@ class PiccoloProcessedData:
             self._temperature_target.append(None)
             self._temperature.append(None)
 
-def read_picco(infiles):
+def read_picco(infiles,calibration=[]):
     log = logging.getLogger("piccolo.read")
 
     dark = {}
     data_sets = {}
-    
+
+    # sort out calibration files
+    radiometric_calibration = {}
+    for c in  calibration:
+        for f in glob.glob(c):
+            log.info('reading calibration file %s'%f)
+            cal = xarray.open_dataset(f)
+            if cal.serial not in radiometric_calibration:
+                radiometric_calibration[cal.serial] = {}
+            if cal.direction in radiometric_calibration[cal.serial]:
+                log.warning('already got calibration for %s %s'%(cal.serial,cal.direction))
+            radiometric_calibration[cal.serial][cal.direction] = cal
+            
+            
     for f in infiles:
         log.info('reading file %s'%f)
 
@@ -127,7 +146,11 @@ def read_picco(infiles):
             if s['SerialNumber'] not in data_sets:
                 data_sets[s['SerialNumber']] = {}
             if s['Direction'] not in data_sets[s['SerialNumber']]:
-                data_sets[s['SerialNumber']][s['Direction']] = PiccoloProcessedData()
+                try:
+                    cal = radiometric_calibration[s['SerialNumber']][s['Direction']]
+                except:
+                    cal = None
+                data_sets[s['SerialNumber']][s['Direction']] = PiccoloProcessedData(cal=cal)
             
             if s['SerialNumber'] not in dark:
                 dark[s['SerialNumber']] = {}

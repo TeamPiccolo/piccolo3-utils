@@ -24,6 +24,7 @@ import logging
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('picco',metavar='PICCO',nargs='+',help='input piccolo json files')
+    parser.add_argument('-c','--calibration-files',default=[],nargs='*',help='radiometric calibration files, you can use this option multiple time and/or use wildcards')
     parser.add_argument('-p','--prefix',default='',help='output prefix')
     parser.add_argument('-d','--debug',action='store_true',default=False,help='enable debug')
     args = parser.parse_args()
@@ -33,7 +34,7 @@ def main():
 
     infiles = args.picco
     infiles.sort()
-    data = read_picco(infiles)
+    data = read_picco(infiles,calibration=args.calibration_files)
 
     for s in data.keys():
         for c in data[s].keys():

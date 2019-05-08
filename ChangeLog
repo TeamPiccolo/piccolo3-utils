@@ -1,4 +1,8 @@
 2019-05-08 Magnus Hagdorn
+ * piccolo3/readpicco.py: add option to read calibration files
+ * piccolo3/utils/PiccoloProcessedData.py: apply radiometric calibration
+
+2019-05-08 Magnus Hagdorn
  * piccolo3/utils/PiccoloProcessedData.py: add some metadata to spectra
  * piccolo3/utils/__init__.py: import new module
  * setup.py: new dependency and script
