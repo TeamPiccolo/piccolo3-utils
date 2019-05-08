@@ -23,3 +23,4 @@ except DistributionNotFound:
     pass
 
 from .PiccoloProcessedData import *
+from .read_radiometric_calibration import *

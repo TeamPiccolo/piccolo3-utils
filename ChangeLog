@@ -1,4 +1,11 @@
 2019-05-08 Magnus Hagdorn
+ * piccolo3/utils/PiccoloProcessedData.py: add some metadata to spectra
+ * piccolo3/utils/__init__.py: import new module
+ * setup.py: new dependency and script
+ * piccolo3/radiometric_cal.py: script to determine radiometric calibration
+ * piccolo3/utils/read_radiometric_calibration.py: read calibration lamp data
+
+2019-05-08 Magnus Hagdorn
  * piccolo3/utils/PiccoloProcessedData.py: store wavelength source
 
 2019-05-08 Magnus Hagdorn

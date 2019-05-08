@@ -24,8 +24,30 @@ import xarray
 import numpy
 import logging
 
+spectra_types = {
+    'dn' : {
+        'description' : 'dn',
+        'units':'1',
+        'corrections':'nonlin, total_dark, integration_time_normalised',
+    },
+    
+    'radiance' : {
+        'description' : 'radiometric',
+        'units':'W/(sr cm^2 nm)',
+        'corrections':'nonlin, total_dark, integration_time_normalised',
+    },
+    
+    'irradiance' : {
+        'description' : 'radiometric',
+        'units':'W/(cm^2 nm)',
+        'corrections':'nonlin, total_dark, integration_time_normalised',
+    },
+}
+
 class PiccoloProcessedData:
-    def __init__(self):
+    def __init__(self,stype='dn'):
+        self._stype = stype
+        
         self._serial = None
         self._direction = None
         self._wavelengths = None
@@ -52,7 +74,7 @@ class PiccoloProcessedData:
         data = xarray.Dataset({'temperature': (['measurement'], self._temperature),
                                'temperature_target': (['measurement'], self._temperature_target),
                                'time' :  (['measurement'], self._timestamp),
-                               'data': (['measurement','wavelengths'], self._data),
+                               'spectra': (['measurement','wavelengths'], self._data),
                                },
                               coords = {'runs': (['measurement'], self._runs),
                                         'batches': (['measurement'], self._batches),
@@ -62,6 +84,8 @@ class PiccoloProcessedData:
         data.attrs['serial'] = self.serial
         data.attrs['direction'] = self.direction
         data.wavelengths.attrs['wavelength_source'] = self._wtype
+        for k in spectra_types[self._stype].keys():
+            data.spectra.attrs[k] =  spectra_types[self._stype][k]
         return data
     
     def add(self, spec, data=None):

@@ -25,12 +25,14 @@ setup(
     setup_requires=['setuptools_scm'],
     install_requires = ['bitarray',
                         'numpy',
+                        'scipy',
                         'piccolo3-common',
                         'xarray',
     ],
     entry_points={
         'console_scripts': [
             'piccolo3-read = piccolo3.readpicco:main',
+            'piccolo3-calibrate = piccolo3.radiometric_cal:main',
             ],
     },
     # metadata for upload to PyPI
