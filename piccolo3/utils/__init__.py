@@ -22,3 +22,4 @@ except DistributionNotFound:
     # package is not installed
     pass
 
+from .PiccoloProcessedData import *

@@ -1,0 +1,10 @@
+2019-05-08 Magnus Hagdorn
+ * piccolo3/utils/__init__.py: import module
+ * setup.py: handle script and new dependencies
+ * piccolo3/readpicco.py: new script to read piccolo json files
+ * piccolo3/utils/PiccoloProcessedData.py: module for reading a set of piccolo
+   json files and producing a xarray dataset
+
+2019-05-07 Magnus Hagdorn
+ * start piccolo3-utils
+

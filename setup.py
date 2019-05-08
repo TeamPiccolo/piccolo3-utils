@@ -26,7 +26,13 @@ setup(
     install_requires = ['bitarray',
                         'numpy',
                         'piccolo3-common',
+                        'xarray',
     ],
+    entry_points={
+        'console_scripts': [
+            'piccolo3-read = piccolo3.readpicco:main',
+            ],
+    },
     # metadata for upload to PyPI
     author = "Magnus Hagdorn, Alasdair MacArthur, Iain Robinson",
     description = "Part of the piccolo3 system. This package provides utility modules",
