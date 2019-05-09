@@ -107,7 +107,9 @@ class PiccoloProcessedData:
         self._batches.append(spec['Batch'])
         self._sequences.append(spec['SequenceNumber'])
         if data is not None:
-            self._data.append(data*self._cal.calibration_coeff.data)
+            if self._cal is not None:
+                data = data * self._cal.calibration_coeff.data
+            self._data.append(dataa)
         else:
             self._data.append(spec.pixels)
         self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=pytz.utc))
