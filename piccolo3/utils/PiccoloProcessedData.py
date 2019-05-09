@@ -109,7 +109,7 @@ class PiccoloProcessedData:
         if data is not None:
             if self._cal is not None:
                 data = data * self._cal.calibration_coeff.data
-            self._data.append(dataa)
+            self._data.append(data)
         else:
             self._data.append(spec.pixels)
         self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=pytz.utc))
