@@ -1,0 +1,13 @@
+{
+    "files": [
+	[
+	    "piccolo3/utils/*.ui",
+	    "piccolo3/utils"
+	]
+    ], 
+    "hooks": [], 
+    "pyrcc": "pyrcc5", 
+    "pyrcc_options": "", 
+    "pyuic": "pyuic5", 
+    "pyuic_options": "--from-import"
+}
