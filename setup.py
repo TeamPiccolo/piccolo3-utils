@@ -43,6 +43,7 @@ setup(
                       'matplotlib',
                       'pandas',
                       'sortedcontainers',
+                      'configobj',
   ],
   data_files=[
     ('share/piccolo3-util',["data/HgArLines.csv",]),
@@ -52,6 +53,7 @@ setup(
       'piccolo3-read = piccolo3.readpicco:main',
       'piccolo3-calibrate = piccolo3.radiometric_cal:main',
       'piccolo3-wavelengthCalibration = piccolo3.pcalibrate:main',
+      'piccolo3-display = piccolo3.disppicco:main',
     ],
     'gui_scripts': [
       'piccolo3-wavelengthCalibration-gui = piccolo3.pcalibrateg:main',

@@ -18,6 +18,10 @@ spectral_lines = another_spectral_line_file
 spectra = spectra_3*, #you can also use globs
 ```
 
+piccolo3-display
+----------------
+Display all spectra in a series of piccolo JSON files
+
 piccolo3-read
 -------------
 Read a set of raw piccolo json files, apply corrections and store in xarray dataset. The following corrections will be applied:
