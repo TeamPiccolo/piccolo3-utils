@@ -1,4 +1,8 @@
 2019-11-16 Magnus Hagdorn
+ * piccolo3/disppicco.py: fix legend; exclude dark pixels; plot saturated
+   spectra with dashes
+
+2019-11-16 Magnus Hagdorn
  * setup.py: add new program
  * piccolo3/disppicco.py: program to display spectra
  * README.md: updated

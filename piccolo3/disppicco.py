@@ -72,7 +72,12 @@ def main():
                 if s['SerialNumber'] not in instruments:
                     c = colours[len(instruments)]
                     instruments[s['SerialNumber']] = (c,s['SaturationLevel'])
-                axes[d].plot(s.waveLengths,s.pixels,color=instruments[s['SerialNumber']][0])
+                w,p = s.getData()
+                if (s.isSaturated):
+                    style = '--'
+                else:
+                    style = '-'
+                axes[d].plot(w,p,ls=style,color=instruments[s['SerialNumber']][0])
 
     handles = []
     labels = []
@@ -85,7 +90,7 @@ def main():
                 labels.append(s)
         haveLabels = True
     
-    fig.legend(h,loc="lower center",labels=labels,ncol=len(instruments))
+    fig.legend(handles=handles,loc="lower center",labels=labels,ncol=len(instruments))
     pyplot.subplots_adjust(bottom=0.18)
     pyplot.show()
     
