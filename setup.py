@@ -54,6 +54,7 @@ setup(
       'piccolo3-calibrate = piccolo3.radiometric_cal:main',
       'piccolo3-wavelengthCalibration = piccolo3.pcalibrate:main',
       'piccolo3-display = piccolo3.disppicco:main',
+      'piccolo3-display-dark = piccolo3.dispdark:main',
       'piccolo3-discard-saturated = piccolo3.discard_saturated:main',
     ],
     'gui_scripts': [

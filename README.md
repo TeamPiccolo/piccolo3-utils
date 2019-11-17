@@ -22,6 +22,12 @@ piccolo3-display
 ----------------
 Display all spectra in a series of piccolo JSON files
 
+piccolo3-display-dark
+---------------------
+Display dark pixels normalised by integration time. When the program is run on a
+single picco file display the normalised values for each pixel. When run on a number
+of files display mean dark pixel value and standard deviation.
+
 piccolo3-discard-saturated
 --------------------------
 Read a directory tree containing piccolo files and sort them into saturated and not-saturated directories maintaing the same directory structure.
