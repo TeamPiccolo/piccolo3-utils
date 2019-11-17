@@ -22,6 +22,10 @@ piccolo3-display
 ----------------
 Display all spectra in a series of piccolo JSON files
 
+piccolo3-discard-saturated
+--------------------------
+Read a directory tree containing piccolo files and sort them into saturated and not-saturated directories maintaing the same directory structure.
+
 piccolo3-read
 -------------
 Read a set of raw piccolo json files, apply corrections and store in xarray dataset. The following corrections will be applied:

@@ -1,4 +1,10 @@
 2019-11-17 Magnus Hagdorn
+ * README.md: document new program
+ * setup.py: install new program
+ * piccolo3/discard_saturated.py: add program to sort piccolo files into
+   saturated and not-saturated files
+
+2019-11-17 Magnus Hagdorn
  * piccolo3/disppicco.py: add option to use the original wavelength
  coefficients
 
