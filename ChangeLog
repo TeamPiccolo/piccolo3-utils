@@ -1,3 +1,7 @@
+2019-11-17 Magnus Hagdorn
+ * piccolo3/disppicco.py: add option to use the original wavelength
+ coefficients
+
 2019-11-16 Magnus Hagdorn
  * piccolo3/disppicco.py: fix legend; exclude dark pixels; plot saturated
    spectra with dashes

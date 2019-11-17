@@ -26,12 +26,15 @@ def main():
     parser.add_argument('-d','--debug',action='store_true',default=False,help='enable debug')
     parser.add_argument('--direction',action='append',help='select directions to plot')
     parser.add_argument('--dark',action='store_true',default=False,help='show dark spectra')
+    parser.add_argument('--use-original-wavelength-coefficients',action='store_true',default=False,help='use original wavelength coefficients insteat of piccolo coefficients')
     args = parser.parse_args()
 
     # start logging
     piccoloLogging(debug=args.debug)
     log = logging.getLogger("piccolo.display")
 
+    use_piccolo_coeff = not args.use_original_wavelength_coefficients
+    
     if args.direction is None:
         directions = ['Upwelling','Downwelling']
     else:
@@ -72,7 +75,7 @@ def main():
                 if s['SerialNumber'] not in instruments:
                     c = colours[len(instruments)]
                     instruments[s['SerialNumber']] = (c,s['SaturationLevel'])
-                w,p = s.getData()
+                w,p = s.getData(piccolo=use_piccolo_coeff)
                 if (s.isSaturated):
                     style = '--'
                 else:
