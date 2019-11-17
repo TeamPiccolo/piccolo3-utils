@@ -46,8 +46,10 @@ spectra_types = {
 }
 
 class PiccoloProcessedData:
-    def __init__(self,cal=None):
+    def __init__(self,cal=None, piccolo=True):
         self._cal = cal
+
+        self._use_piccolo_coeff = piccolo
         
         self._serial = None
         self._direction = None
@@ -62,7 +64,13 @@ class PiccoloProcessedData:
         self._timestamp = []
         self._temperature_target = []
         self._temperature = []
+        
+        self._log = logging.getLogger("piccolo.ProcessedData")
 
+    @property
+    def log(self):
+        return self._log
+        
     @property
     def serial(self):
         return self._serial
@@ -96,10 +104,12 @@ class PiccoloProcessedData:
     
     def add(self, spec, data=None):
         assert isinstance(spec,PiccoloSpectrum)
+        optical_pixels = slice(*spec['OpticalPixelRange'])
         if self._serial is None:
             self._serial = spec['SerialNumber']
             self._direction = spec['Direction']
-            self._wtype,self._wavelengths = spec.getWavelengths()
+            self._wtype, w = spec.getWavelengths(piccolo=self._use_piccolo_coeff)
+            self._wavelengths = w[optical_pixels]
         assert self.serial == spec['SerialNumber']
         assert self.direction == spec['Direction']
 
@@ -109,9 +119,9 @@ class PiccoloProcessedData:
         if data is not None:
             if self._cal is not None:
                 data = data * self._cal.calibration_coeff.data
-            self._data.append(data)
+            self._data.append(data[optical_pixels])
         else:
-            self._data.append(spec.pixels)
+            self._data.append(spec.pixels[optical_pixels])
         self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=pytz.utc))
         if 'TemperatureDetectorActual' in spec.keys():
             self._temperature_target.append(spec['TemperatureDetectorSet'])
@@ -120,7 +130,7 @@ class PiccoloProcessedData:
             self._temperature_target.append(None)
             self._temperature.append(None)
 
-def read_picco(infiles,calibration=[]):
+def read_picco(infiles,calibration=[], piccolo=True, include_saturated=False):
     log = logging.getLogger("piccolo.read")
 
     dark = {}
@@ -145,6 +155,13 @@ def read_picco(infiles,calibration=[]):
         spectra = PiccoloSpectraList(data=open(f,'r').read())
 
         for s in spectra:
+            if s.isSaturated:
+                e = 'spectrum {} direction {} is saturated'.format(s['SerialNumber'],s['Direction'])
+                if include_saturated:
+                    log.warning(e)
+                else:
+                    log.error(e)
+                    continue
             if s['SerialNumber'] not in data_sets:
                 data_sets[s['SerialNumber']] = {}
             if s['Direction'] not in data_sets[s['SerialNumber']]:
@@ -152,7 +169,7 @@ def read_picco(infiles,calibration=[]):
                     cal = radiometric_calibration[s['SerialNumber']][s['Direction']]
                 except:
                     cal = None
-                data_sets[s['SerialNumber']][s['Direction']] = PiccoloProcessedData(cal=cal)
+                data_sets[s['SerialNumber']][s['Direction']] = PiccoloProcessedData(cal=cal,piccolo=piccolo)
             
             if s['SerialNumber'] not in dark:
                 dark[s['SerialNumber']] = {}

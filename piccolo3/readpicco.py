@@ -19,26 +19,31 @@ import argparse
 from piccolo3.common import piccoloLogging
 from piccolo3.utils import read_picco
 import logging
+from pathlib import Path
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('picco',metavar='PICCO',nargs='+',help='input piccolo json files')
     parser.add_argument('-c','--calibration-files',default=[],nargs='*',help='radiometric calibration files, you can use this option multiple time and/or use wildcards')
-    parser.add_argument('-p','--prefix',default='',help='output prefix')
+    parser.add_argument('-p','--prefix',default='.',help='output prefix')
+    parser.add_argument('--include-saturated',action='store_true',default=False,help='include saturated spectra')
+    parser.add_argument('--use-original-wavelength-coefficients',action='store_true',default=False,help='use original wavelength coefficients insteat of piccolo coefficients')
     parser.add_argument('-d','--debug',action='store_true',default=False,help='enable debug')
     args = parser.parse_args()
 
     # start logging
     piccoloLogging(debug=args.debug)
-
+    use_piccolo_coeff = not args.use_original_wavelength_coefficients
+    
+    out = Path(args.prefix)    
     infiles = args.picco
     infiles.sort()
-    data = read_picco(infiles,calibration=args.calibration_files)
+    data = read_picco(infiles,calibration=args.calibration_files,piccolo=use_piccolo_coeff,include_saturated=args.include_saturated)
 
     for s in data.keys():
         for c in data[s].keys():
-            outname = args.prefix+'%s_%s.nc'%(s,c)
+            outname = out.joinpath('%s_%s.nc'%(s,c))
             data[s][c].data.to_netcdf(outname)
     
 if __name__ == '__main__':
