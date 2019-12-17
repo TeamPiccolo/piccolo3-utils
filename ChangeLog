@@ -1,3 +1,6 @@
+2019-12-17 Magnus Hagdorn
+ * piccolo3/dispdark.py: plot dark current
+
 2019-11-17 Magnus Hagdorn
  * piccolo3/readpicco.py: add option to use original wavelength coefficients;
    add option to include saturated spectra

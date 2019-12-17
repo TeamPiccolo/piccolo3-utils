@@ -58,7 +58,8 @@ def main():
 
         for s in spectra:
             normalised_dark = s.dark_pixels/s['IntegrationTime']
-            pyplot.plot(normalised_dark,'o',label='{} {}'.format(s['SerialNumber'],s['Direction']))
+            p=pyplot.plot(normalised_dark,'o',label='{} {}'.format(s['SerialNumber'],s['Direction']))
+            pyplot.axhline(normalised_dark.mean(),color=p[0].get_color())
         
 
     pyplot.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
