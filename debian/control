@@ -1,0 +1,15 @@
+Source: piccolo3-utils
+Section: unknown
+Priority: optional
+Maintainer: Magnus Hagdorn <magnus.hagdorn@ed.ac.uk>
+Build-Depends: debhelper-compat (= 12)
+Standards-Version: 4.4.1
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Browser: https://salsa.debian.org/debian/piccolo3-utils
+#Vcs-Git: https://salsa.debian.org/debian/piccolo3-utils.git
+
+Package: piccolo3-utils
+Architecture: all
+Depends: ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
