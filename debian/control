@@ -1,15 +1,44 @@
 Source: piccolo3-utils
-Section: unknown
+Section: python
 Priority: optional
 Maintainer: Magnus Hagdorn <magnus.hagdorn@ed.ac.uk>
-Build-Depends: debhelper-compat (= 12)
+Build-Depends: debhelper-compat (= 12),
+               dh-sequence-python3,
+	       dh-python,
+	       python3-setuptools-scm,
+               python3-all,
+	       piccolo3-common,
+               python3-numpy,
+	       python3-bitarray,
+	       python3-scipy,
+	       python3-xarray,
+	       python3-matplotlib,
+	       python3-pandas,
+	       python3-sortedcontainers,
+	       python3-configobj,
+	       python3-pyqt-distutils
 Standards-Version: 4.4.1
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Browser: https://salsa.debian.org/debian/piccolo3-utils
-#Vcs-Git: https://salsa.debian.org/debian/piccolo3-utils.git
+Homepage: https://blogs.ed.ac.uk/teampiccolo/
+#Vcs-Browser: https://github.com/TeamPiccolo/piccolo3-utils
+#Vcs-Git: https://github.com/TeamPiccolo/piccolo3-utils.git
 
 Package: piccolo3-utils
 Architecture: all
-Depends: ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Depends: ${misc:Depends},
+         piccolo3-common,
+         python3-numpy,
+	 python3-bitarray,
+	 python3-scipy,
+	 python3-xarray,
+	 python3-matplotlib,
+	 python3-pandas,
+	 python3-sortedcontainers,
+	 python3-configobj
+Description: Some useful utilities for the piccolo3 system.
+ Utilities for the piccolo3 spectral system. This package contains
+  * piccolo3-wavelengthCalibration[-gui]
+  * piccolo3-display
+  * piccolo3-display-dark
+  * piccolo3-discard-saturated
+  * piccolo3-read
+  * piccolo3-calibrate
