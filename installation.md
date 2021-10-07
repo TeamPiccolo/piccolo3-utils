@@ -36,3 +36,22 @@ python setup.py install
 python setup.py install_data
 ```
 In future when you want to use the utilities you need to activate the environment. The utilities are in the path.
+
+
+conda
+-----
+conda is a crossplatform scientific python distribution. Once you have 
+installed miniconda you can create a conda environment using
+```
+conda env create -f p3utils.yml
+```
+then activate it 
+```
+conda activate piccolo3-utils
+```
+and install the utils
+```
+python setup.py build_ui
+python setup.py install
+python setup.py install_data
+```

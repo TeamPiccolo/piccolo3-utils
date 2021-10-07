@@ -1,0 +1,17 @@
+name: piccolo3-utils
+dependencies:
+ - python=3.8
+ - bitarray
+ - numpy
+ - scipy
+ - xarray
+ - matplotlib
+ - pandas
+ - sortedcontainers
+ - configobj
+ - setuptools
+ - pyqt
+ - pip:
+   - pyqt-distutils
+   - git+https://github.com/TeamPiccolo/piccolo3-common
+
