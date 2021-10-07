@@ -5,6 +5,7 @@ dependencies:
  - numpy
  - scipy
  - xarray
+ - netcdf4
  - matplotlib
  - pandas
  - sortedcontainers
