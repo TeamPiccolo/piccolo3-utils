@@ -9,7 +9,8 @@ On the current LTS version of Ubuntu (20.04) most of the dependencies can be sat
 apt install python3 python3-bitarray python3-numpy python3 python3-scipy \
             python3-xarray python3-matplotlib python3-pandas \
             python3-sortedcontainers python3-configobj python3-setuptools \
-            python3-pyqt5 pyqt5-dev-tools python3-pyqt-distutils
+            python3-pyqt5 pyqt5-dev-tools python3-pyqt-distutils \
+            python3-netcdf4
 ```
 
 I would suggest to install the piccolo3 utilities into a python virtual environment. Assuming you want to keep the virtual environment in `~/piccolo3/venv` run
