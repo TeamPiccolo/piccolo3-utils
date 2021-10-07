@@ -36,7 +36,7 @@ def main():
     use_piccolo_coeff = not args.use_original_wavelength_coefficients
     
     if args.direction is None:
-        directions = ['Upwelling','Downwelling']
+        directions = ['upwelling','downwelling']
     else:
         directions = args.direction
 
@@ -47,6 +47,8 @@ def main():
 
     axes = {}
     fig, a = pyplot.subplots(1,len(directions),sharex=True,sharey=True)
+    if len(directions) == 1:
+        a = [a]
     for i in range(len(directions)):
         a[i].set_title(directions[i])
         a[i].set_xlabel('wavelength')
