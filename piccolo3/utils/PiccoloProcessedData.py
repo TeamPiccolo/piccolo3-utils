@@ -102,7 +102,7 @@ class PiccoloProcessedData:
             data.spectra.attrs[k] =  spectra_types[stype][k]
         return data
     
-    def add(self, spec, data=None):
+    def add(self, spec, run, batch, seqNr, data=None):
         assert isinstance(spec,PiccoloSpectrum)
         optical_pixels = slice(*spec['OpticalPixelRange'])
         if self._serial is None:
@@ -113,16 +113,16 @@ class PiccoloProcessedData:
         assert self.serial == spec['SerialNumber']
         assert self.direction == spec['Direction']
 
-        self._runs.append(spec['Run'])
-        self._batches.append(spec['Batch'])
-        self._sequences.append(spec['SequenceNumber'])
+        self._runs.append(run)
+        self._batches.append(batch)
+        self._sequences.append(seqNr)
         if data is not None:
             if self._cal is not None:
                 data = data * self._cal.calibration_coeff.data
             self._data.append(data[optical_pixels])
         else:
             self._data.append(spec.pixels[optical_pixels])
-        self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%fZ').replace(tzinfo=pytz.utc))
+        self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%f%z').replace(tzinfo=pytz.utc))
         if 'TemperatureDetectorActual' in spec.keys():
             self._temperature_target.append(spec['TemperatureDetectorSet'])
             self._temperature.append(spec['TemperatureDetectorActual'])
@@ -182,6 +182,8 @@ def read_picco(infiles,calibration=[], piccolo=True, include_saturated=False):
                 assert (abs(s['IntegrationTime']-d['IntegrationTime'])<1.)
                 # apply total dark correction
                 pixels = (s.corrected_pixels - d.corrected_pixels)/s['IntegrationTime']
-                data_sets[s['SerialNumber']][s['Direction']].add(s,data=pixels)
+                data_sets[s['SerialNumber']][s['Direction']].add(s,
+                                                                 spectra.run, spectra.batch, spectra.seqNr,
+                                                                 data=pixels)
 
     return data_sets
