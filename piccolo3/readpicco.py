@@ -44,7 +44,7 @@ def main():
     for s in data.keys():
         for c in data[s].keys():
             outname = out.joinpath('%s_%s.nc'%(s,c))
-            data[s][c].data.to_netcdf(outname)
+            data[s][c].data.to_netcdf(outname, engine='netcdf4')
     
 if __name__ == '__main__':
     main()
