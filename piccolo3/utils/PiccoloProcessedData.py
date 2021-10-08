@@ -122,7 +122,7 @@ class PiccoloProcessedData:
             self._data.append(data[optical_pixels])
         else:
             self._data.append(spec.pixels[optical_pixels])
-        self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%f%z').replace(tzinfo=pytz.utc))
+        self._timestamp.append(datetime.datetime.strptime(spec['Datetime'], '%Y-%m-%dT%H:%M:%S.%f%z').replace(tzinfo=pytz.utc).replace(tzinfo=None))
         if 'TemperatureDetectorActual' in spec.keys():
             self._temperature_target.append(spec['TemperatureDetectorSet'])
             self._temperature.append(spec['TemperatureDetectorActual'])
