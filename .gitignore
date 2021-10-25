@@ -1,0 +1,8 @@
+*~
+piccolo3/__pycache__/
+piccolo3_utils.egg-info/
+.eggs/
+build/
+dist/
+piccolo3/utils/calibrate_ui.py
+piccolo3/utils/lightSourceDisplay_ui.py
