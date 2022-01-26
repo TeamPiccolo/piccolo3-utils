@@ -21,7 +21,7 @@ import numpy
 from scipy import interpolate
 
 HEADER = ['description','units','some','start','end','step']
-HEADER_TYPE = [str,str,int,float,float,float]
+HEADER_TYPE = [str,str,str,float,float,float]
 
 def read_radiometric_calibration(fname):
     indata = open(fname,'r')
