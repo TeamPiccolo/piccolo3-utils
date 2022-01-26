@@ -26,7 +26,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('picco',metavar='PICCO',nargs='+',help='input piccolo json files')
     parser.add_argument('-c','--calibration-files',default=[],nargs='*',help='radiometric calibration files, you can use this option multiple time and/or use wildcards')
-    parser.add_argument('-p','--prefix',default='.',help='output prefix')
+    parser.add_argument('-p','--prefix',default='.',help='the name of the output directory')
     parser.add_argument('--include-saturated',action='store_true',default=False,help='include saturated spectra')
     parser.add_argument('--use-original-wavelength-coefficients',action='store_true',default=False,help='use original wavelength coefficients insteat of piccolo coefficients')
     parser.add_argument('-d','--debug',action='store_true',default=False,help='enable debug')
@@ -36,7 +36,11 @@ def main():
     piccoloLogging(debug=args.debug)
     use_piccolo_coeff = not args.use_original_wavelength_coefficients
     
-    out = Path(args.prefix)    
+    out = Path(args.prefix)
+    if not out.exists():
+        parser.error(f'output directory {out} does not exist')
+    if not out.is_dir():
+        parser.error(f'output directory {out} is not a directory')
     infiles = args.picco
     infiles.sort()
     data = read_picco(infiles,calibration=args.calibration_files,piccolo=use_piccolo_coeff,include_saturated=args.include_saturated)
