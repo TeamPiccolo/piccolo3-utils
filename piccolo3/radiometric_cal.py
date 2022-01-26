@@ -26,6 +26,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('dn',help='name of input dn file')
     parser.add_argument('calibration',help='name of input calibration file')
+    parser.add_argument('-c','--store-csv',action='store_true',default=False,
+                        help="store as csv file")
     parser.add_argument('output',help='name of output calibration file')
     parser.add_argument('-d','--debug',action='store_true',default=False,help='enable debug')
     args = parser.parse_args()
@@ -47,8 +49,11 @@ def main():
 
     for k in ['serial','direction']:
         calibration.attrs[k] = dn.attrs[k]
-    
-    calibration.to_netcdf(args.output)
+
+    if args.store_csv:
+        calibration.to_dataframe().to_csv(args.output)
+    else:
+        calibration.to_netcdf(args.output)
     
     if False:
         f, (ax1, ax2, ax3) = pyplot.subplots(3, 1, sharex=True)
